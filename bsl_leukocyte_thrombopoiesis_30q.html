@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>វិញ្ញាសាអនុវត្តឈាមវិទ្យា៖ Granulopoiesis, Monocytopoiesis, Thrombopoiesis & Lymphopoiesis - ថ្នាក់ BSL ឆ្នាំទី១</title>
+<link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b1120;
+  --card: #15203b;
+  --card-border: #1e293b;
+  --primary: #38bdf8;
+  --primary-hover: #0284c7;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent: #f59e0b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kantumruy Pro', 'Inter', system-ui, sans-serif; }
+body { background: var(--bg); color: var(--text); min-height: 100vh; padding: 16px; display: flex; flex-direction: column; align-items: center; }
+.wrap { width: 100%; max-width: 820px; margin: 0 auto; }
+header.hero { text-align: center; margin-bottom: 20px; }
+.hero h1 { font-size: 1.30rem; color: var(--primary); margin-bottom: 6px; line-height: 1.45; }
+.hero p { color: var(--text-muted); font-size: 0.88rem; }
+.card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--card-border); font-size: 0.88rem; }
+.badge { background: #0369a1; color: #bae6fd; padding: 4px 10px; border-radius: 9999px; font-weight: 600; font-size: 0.75rem; }
+.timer-box { font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 6px; font-size: 1.05rem; }
+.timer-box.urgent { color: var(--danger); }
+.question-title { font-size: 1.05rem; line-height: 1.6; font-weight: 600; margin-bottom: 14px; color: var(--text); }
+.diagram-box { display: flex; justify-content: center; align-items: center; background: #080e1e; border: 1px solid #1e3a8a; border-radius: 10px; padding: 14px; margin-bottom: 16px; }
+.options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.option-btn { background: #0b1120; border: 1px solid var(--card-border); color: var(--text); padding: 14px 16px; border-radius: 10px; text-align: left; font-size: 0.94rem; cursor: pointer; transition: all 0.15s ease; line-height: 1.5; display: flex; align-items: flex-start; gap: 10px; }
+.option-btn:hover:not(:disabled) { border-color: var(--primary); background: #1a253c; }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct { background: rgba(34, 197, 94, 0.22) !important; border-color: var(--success) !important; color: #86efac; font-weight: 600; }
+.option-btn.wrong { background: rgba(239, 68, 68, 0.22) !important; border-color: var(--danger) !important; color: #fca5a5; }
+.letter { font-weight: 700; color: var(--primary); font-size: 1.05rem; min-width: 25px; }
+.hint-section { margin-bottom: 16px; }
+.hint-btn { background: none; border: none; color: var(--accent); font-size: 0.88rem; cursor: pointer; text-decoration: underline; padding: 0; }
+.hint-content { display: none; margin-top: 8px; background: rgba(245, 158, 11, 0.12); border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 4px; font-size: 0.88rem; color: #fde68a; line-height: 1.5; }
+.feedback-box { display: none; background: #0d1a33; border: 1px solid #2563eb; border-radius: 10px; padding: 16px; margin-bottom: 16px; line-height: 1.5; font-size: 0.9rem; }
+.feedback-box h4 { margin-bottom: 8px; color: #93c5fd; font-size: 0.95rem; }
+.controls { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.action-btn { background: var(--primary); color: #090d16; border: none; padding: 10px 22px; border-radius: 8px; font-weight: 700; font-size: 0.92rem; cursor: pointer; transition: background 0.15s; }
+.action-btn:hover { background: var(--primary-hover); }
+.action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.progress-wrap { margin-top: 20px; }
+.progress-bar-bg { background: #1e293b; height: 8px; border-radius: 9999px; overflow: hidden; }
+.progress-bar-fill { background: var(--primary); height: 100%; width: 3.33%; transition: width 0.3s; }
+.final-screen { display: none; text-align: center; padding: 36px 12px; }
+.final-score { font-size: 3rem; font-weight: 800; color: var(--primary); margin: 16px 0; }
+.review-list { margin-top: 20px; text-align: left; }
+.review-item { border: 1px solid var(--card-border); border-radius: 8px; padding: 12px; margin-bottom: 10px; background: #0b1120; font-size: 0.88rem; }
+.review-item summary { cursor: pointer; font-weight: 700; color: var(--primary); }
+.review-item p { margin-top: 6px; color: #cbd5e1; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>វិញ្ញាសាអនុវត្តឈាមវិទ្យា៖ Granulopoiesis, Monocytopoiesis, Thrombopoiesis & Lymphopoiesis</h1>
+    <p>ផ្អែកលើស្លាយមេរៀនសាស្ត្រាចារ្យ Ph. NHEP Sopheary (UHS) • ៣០ សំណួរគ្លីនិក & មន្ទីរពិសោធន៍ • ចៃដន្យ (Shuffle) • ៦០ វិនាទី</p>
+  </header>
+
+  <div class="card" id="quizCard">
+    <div class="status-bar">
+      <span class="badge" id="topicBadge">មេរៀន</span>
+      <span id="qCount" style="font-weight:600;">សំណួរទី 1 នៃ 30</span>
+      <div class="timer-box" id="timerBox">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="timerText">60s</span>
+      </div>
+    </div>
+
+    <div id="diagramContainer" class="diagram-box"></div>
+
+    <div class="question-title" id="questionTitle"></div>
+
+    <div class="hint-section">
+      <button class="hint-btn" id="hintToggleBtn" onclick="toggleHint()">💡 បង្ហាញតម្រុយគ្លីនិក (Show Hint)</button>
+      <div class="hint-content" id="hintContent"></div>
+    </div>
+
+    <div class="options-grid" id="optionsGrid"></div>
+
+    <div class="feedback-box" id="feedbackBox">
+      <h4>ការពន្យល់លម្អិតក្នុងមន្ទីរពិសោធន៍ (Lab Rationale):</h4>
+      <div id="feedbackText"></div>
+    </div>
+
+    <div class="controls">
+      <span style="font-size:0.88rem; color:var(--text-muted);" id="liveScore">ពិន្ទុ: 0 / 0</span>
+      <button class="action-btn" id="nextBtn" onclick="nextQuestion()" disabled>សំណួរបន្ទាប់ →</button>
+    </div>
+  </div>
+
+  <div class="card final-screen" id="finalCard">
+    <h2>បញ្ចប់ការធ្វើតេស្ត!</h2>
+    <p style="margin-top:8px; color:var(--text-muted);">អ្នកបានឆ្លងកាត់ការអនុវត្តវិញ្ញាសា Leukocytes & Thrombopoiesis ៣០ សំណួររួចរាល់ហើយ។</p>
+    <div class="final-score" id="finalScoreVal">0%</div>
+    <p id="finalFeedback" style="margin-bottom: 24px; color: #cbd5e1; font-size:1.02rem; line-height:1.6;"></p>
+    <button class="action-btn" onclick="initQuiz()">ធ្វើវិញ្ញាសាសាឡើងវិញ (Shuffle ថ្មី)</button>
+    <div class="review-list" id="reviewContainer"></div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const rawQuestions = [
+  {
+    topic: "Granulopoiesis — Mitotic vs Maturation-Storage Pools",
+    title: "ក្នុងដំណើរការ Granulopoiesis នៅខួរឆ្អឹង តើកោសិកាដំណាក់កាលចុងក្រោយបង្អស់មួយណាដែលនៅតែមានសមត្ថភាពធ្វើ Mitosis (DNA synthesis) មុនពេលឈានចូល Maturation-storage pool?",
+    hint: "Myelocyte គឺជាកោសិកាចុងក្រោយនៃ Mitotic pool (Proliferative phase)។",
+    svg: `<svg width="240" height="85" viewBox="0 0 240 85"><rect x="10" y="20" width="105" height="45" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/><text x="62" y="38" fill="#38bdf8" font-size="9" text-anchor="middle">Mitotic Pool</text><text x="62" y="54" fill="#94a3b8" font-size="8" text-anchor="middle">Blast → Myelocyte</text><rect x="125" y="20" width="105" height="45" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><text x="177" y="38" fill="#f59e0b" font-size="9" text-anchor="middle">Post-Mitotic Pool</text><text x="177" y="54" fill="#94a3b8" font-size="8" text-anchor="middle">Metamyelo → Seg</text></svg>`,
+    options: [
+      { text: "Myelocyte (កោសិកាចុងក្រោយដែលមានសមត្ថភាពធ្វើសំយោគ DNA និងចែកខ្លួន)", isCorrect: true },
+      { text: "Metamyelocyte (កោសិកាដែលចាប់ផ្តើមរាងដូចគ្រលៀន)", isCorrect: false },
+      { text: "Band form neutrophil (កោសិកាណៃយូកោងជាបូ)", isCorrect: false },
+      { text: "Promyelocyte (កោសិកាសំបូរក្រានុលបឋម)", isCorrect: false }
+    ],
+    rationale: "យោងតាមស្លាយមេរៀន Bone marrow compartment៖ ដំណាក់កាល Proliferative (Mitotic pool) រួមមាន Myeloblast, Promyelocyte, និងបញ្ចប់ត្រឹម Myelocyte (មានសមត្ថភាព DNA synthesis)។ នៅពេលឈានដល់ Metamyelocyte កោសិកាឆ្លងផុត mitotic division រួចចូលក្នុង Maturation-storage compartment (Metamyelocytes 45%, Bands 35%, Segs 20%)។"
+  },
+  {
+    topic: "Granulopoiesis — Bone Marrow Storage Compartment Ratios",
+    title: "នៅក្នុងអាងស្តុក និងលូតលាស់នៃខួរឆ្អឹង (Maturation-storage pool) តើសមាមាត្រភាគរយធម្មតារវាង Metamyelocytes, Band forms, និង Segmented neutrophils ត្រូវបានចែកចាយយ៉ាងដូចម្តេច?",
+    hint: "Metamyelocytes 45%, Bands 35%, និង Segmented neutrophils 20%។",
+    options: [
+      { text: "Metamyelocytes 45%, Band form neutrophils 35%, និង Segmented neutrophils 20%", isCorrect: true },
+      { text: "Metamyelocytes 10%, Band form neutrophils 20%, និង Segmented neutrophils 70%", isCorrect: false },
+      { text: "Metamyelocytes 33%, Band form neutrophils 33%, និង Segmented neutrophils 33%", isCorrect: false },
+      { text: "Metamyelocytes 70%, Band form neutrophils 25%, និង Segmented neutrophils 5%", isCorrect: false }
+    ],
+    rationale: "យោងតាម Figure: Bone marrow compartment ក្នុងស្លាយមេរៀន៖ នៅក្នុង Maturation-storage compartment នៃខួរឆ្អឹង កោសិកា Metamyelocytes មាន 45%, Band form neutrophils មាន 35%, និង Segmented neutrophils មាន 20% មុនពេលបញ្ចេញចូលទៅកាន់ចរន្តឈាមរត់។"
+  },
+  {
+    topic: "Granulopoiesis — Primary vs Secondary Granules",
+    title: "ក្រោមមីក្រូទស្សន៍ តើនៅដំណាក់កាលកោសិកាណាដែលក្រានុលជាក់លាក់ទីពីរ (Secondary / Specific lilac granules) ចាប់ផ្តើមសំយោគឡើងដំបូងគេបង្អស់?",
+    hint: "Myelocyte គឺជាដំណាក់កាលដំបូងដែលលេចចេញ Specific granules (Lilac) លាយជាមួយ Primary azurophilic granules។",
+    options: [
+      { text: "Myelocyte (លេចចេញ Secondary specific granules ពណ៌ផ្កាឈូក/ស្វាយព្រាល)", isCorrect: true },
+      { text: "Promyelocyte (ដំណាក់កាលផលិតតែ Primary azurophilic granules ធំៗ)", isCorrect: false },
+      { text: "Myeloblast (ដំណាក់កាលគ្មានក្រានុលទាល់តែសោះ)", isCorrect: false },
+      { text: "Band neutrophil (ដំណាក់កាលដែលបាត់បង់ក្រានុលទាំងអស់)", isCorrect: false }
+    ],
+    rationale: "យោងតាមស្លាយមេរៀន៖ Primary (azurophilic) granules កើតឡើងនៅដំណាក់កាល Promyelocyte។ រីឯ Secondary (specific) granules ដែលជាក្រានុលជាក់លាក់សំគាល់ប្រភេទនីមួយៗ (Neutrophilic lilac, Eosinophilic red-orange, Basophilic purple-black) ចាប់ផ្តើមសំយោគលេចរូបរាងដំបូងនៅដំណាក់កាល Myelocyte។"
+  },
+  {
+    topic: "WBC Morphology — Band vs Segmented Differentiation",
+    title: "ដើម្បីញែកដាច់រវាង Neutrophilic Band និង Segmented Neutrophil លើគំនាសឈាម តើលក្ខណៈវិនិច្ឆ័យរូបសាស្ត្រណៃយូ (Nuclear bridge) ណាដែលជាក្បួនខ្នាតស្តង់ដារ?",
+    hint: "បើមានសរសៃស្តើងគ្មានក្រូម៉ាទីន (Thread-like filament) គឺ Segmented; បើស្ពានភ្ជាប់នៅក្រាស់ឃើញក្រូម៉ាទីន គឺ Band។",
+    svg: `<svg width="220" height="85" viewBox="0 0 220 85"><ellipse cx="50" cy="42" rx="20" ry="14" fill="#818cf8"/><ellipse cx="90" cy="42" rx="20" ry="14" fill="#818cf8"/><line x1="68" y1="42" x2="72" y2="42" stroke="#1e1b4b" stroke-width="1.5"/><text x="70" y="75" fill="#f8fafc" font-size="8" text-anchor="middle">Filament (Seg)</text><path d="M 140,25 Q 165,15 175,42 Q 165,70 140,60 Q 155,42 140,25 Z" fill="#818cf8"/><text x="160" y="75" fill="#f59e0b" font-size="8" text-anchor="middle">Thick Isthmus (Band)</text></svg>`,
+    options: [
+      { text: "Segmented មាន lobes ភ្ជាប់ដោយសរសៃស្តើង Filament គ្មានក្រូម៉ាទីន រីឯ Band ភ្ជាប់ដោយស្ពានក្រាស់ឃើញក្រូម៉ាទីន", isCorrect: true },
+      { text: "Band មានទំហំធំជាង Segmented ពីរដងជានិច្ច ហើយគ្មានផ្ទុកក្រានុល", isCorrect: false },
+      { text: "Segmented ត្រូវតែមាន lobes ចំនួន ៧ ឡើងទៅទើបអាចកំណត់បាន", isCorrect: false },
+      { text: "Band មានណៃយូរាងមូលដូចពងមាន់ រីឯ Segmented មានណៃយូរាងដូចជើងសេះ", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀនបញ្ជាក់យ៉ាងច្បាស់៖ Segmented neutrophil មាន lobes 2 ទៅ 5 ភ្ជាប់គ្នាដោយខ្សែសរសៃស្តើង filament-like connection ដោយមើលមិនឃើញប្លុកក្រូម៉ាទីនឡើយ។ បើកន្លែងតភ្ជាប់នៅក្រាស់ (isthmus) ដែលនៅតែសង្កេតឃើញ chromatin granules រវាងគែមទាំងសងខាង នោះនៅតែចាត់ទុកជា Band form។"
+  },
+  {
+    topic: "Neutrophil Kinetics — Blood & Tissue Lifespan",
+    title: "យោងតាមស្លាយមេរៀន Neutrophil Kinetics តើកោសិកា Neutrophil ចំណាយពេលនៅក្នុងចរន្តឈាម (Circulation) ប៉ុន្មានម៉ោង ហើយអាចរស់នៅក្នុងជាលិកា (Tissues) បានរយៈពេលប៉ុន្មានថ្ងៃ?",
+    hint: "នៅក្នុងឈាម 6-10 ម៉ោង; នៅក្នុងជាលិកា 4-5 ថ្ងៃ។",
+    options: [
+      { text: "ក្នុងចរន្តឈាម 6 ទៅ 10 ម៉ោង (6-10 hours) និងក្នុងជាលិកា 4 ទៅ 5 ថ្ងៃ (4-5 days)", isCorrect: true },
+      { text: "ក្នុងចរន្តឈាម 120 ថ្ងៃ និងក្នុងជាលិកា ២ ម៉ោង", isCorrect: false },
+      { text: "ក្នុងចរន្តឈាម 7 ទៅ 10 ថ្ងៃ និងក្នុងជាលិកា ២៤ ម៉ោង", isCorrect: false },
+      { text: "ក្នុងចរន្តឈាម ១ ខែ និងក្នុងជាលិកាពេញមួយជីវិត", isCorrect: false }
+    ],
+    rationale: "តាមគំនូសបំព្រួញ Neutrophil kinetics (Figure 8.3)៖ Neutrophils ត្រូវលូតលាស់ក្នុងខួរឆ្អឹង 6-10 ថ្ងៃ ពេលចូលដល់ចរន្តឈាមវាធ្វើដំណើរត្រឹមតែ 6-10 ម៉ោងប៉ុណ្ណោះ មុនពេលឆ្លងកាត់ Diapedesis ចូលទៅកាន់ជាលិកា ដែលនៅទីនោះវាបំពេញមុខងាររស់នៅបាន 4-5 ថ្ងៃ។"
+  },
+  {
+    topic: "WBC Migration — Margination & Diapedesis",
+    title: "នៅក្នុងចរន្តឈាមរត់ កោសិកា Granulocytes ត្រូវបានបែងចែកជាពីរអាង (Circulating & Marginating pools)។ តើពាក្យបច្ចេកទេស 'Diapedesis' សំដៅលើដំណើរការអ្វី?",
+    hint: "ចលនារបស់ granulocytes ជ្រៀតចេញពីចរន្តឈាមកាត់តាមកោសិកា endothelial ទៅកាន់ជាលិកា។",
+    options: [
+      { text: "ចលនារបស់ Granulocytes ជ្រៀតឆ្លងកាត់ជញ្ជាំងសរសៃឈាម (Endothelium) ចូលទៅកាន់ជាលិកា", isCorrect: true },
+      { text: "ការបំបែកខ្លួនដោយ mitotic division នៃកោសិកា Promyelocyte", isCorrect: false },
+      { text: "ការលេបត្របាក់បាក់តេរីដោយផ្ទាល់នៅក្នុងប្លាស្មាឈាម", isCorrect: false },
+      { text: "ការបាត់បង់ណៃយូរបស់កោសិកាឈាមក្រហមក្នុងខួរឆ្អឹង", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀនបញ្ជាក់ថា៖ Marginating granulocytes គឺជាកោសិកាដែលតោងជាប់នឹង endothelium នៃសរសៃឈាម។ ចលនាដែល granulocytes (ជាពិសេស neutrophils) ធ្វើការបត់បែនរាងកាយជ្រៀតឆ្លងកាត់ជញ្ជាំងកោសិកា endothelial ចេញពីចរន្តឈាមទៅកាន់ជាលិកាដែលមានការរលាក ហៅថា Diapedesis។"
+  },
+  {
+    topic: "Phagocytosis — Biochemical Steps",
+    title: "យោងតាមស្លាយមេរៀន ដំណើរការ Phagocytosis របស់ Neutrophils ត្រូវបានបែងចែកជា ៣ ដំណាក់កាលធំៗ។ តើដំណាក់កាលទាំងបីនោះមានលំដាប់លំដោយយ៉ាងដូចម្តេច?",
+    hint: "Movement/Chemotaxis -> Engulfment/Phagosome -> Digestion/Lysosome fusion។",
+    svg: `<svg width="240" height="85" viewBox="0 0 240 85"><circle cx="40" cy="42" r="18" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/><text x="40" y="45" fill="#38bdf8" font-size="8" text-anchor="middle">1. Move</text><path d="M 62,42 L 80,42" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/><circle cx="102" cy="42" r="18" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><text x="102" y="45" fill="#f59e0b" font-size="8" text-anchor="middle">2. Engulf</text><path d="M 124,42 L 142,42" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/><circle cx="164" cy="42" r="18" fill="#1e293b" stroke="#22c55e" stroke-width="2"/><text x="164" y="45" fill="#22c55e" font-size="8" text-anchor="middle">3. Digest</text></svg>`,
+    options: [
+      { text: "Movement of cells (Chemotaxis) → Engulfment (Phagosome formation) → Digestion (Lysosome fusion)", isCorrect: true },
+      { text: "Digestion → Movement of cells → Adherence ទៅលើស្បែក", isCorrect: false },
+      { text: "Mitosis → Engulfment → Diapedesis ចូលខួរឆ្អឹង", isCorrect: false },
+      { text: "Apoptosis → Chemotaxis → Degranulation នៃប្លាកែត", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀនចែងច្បាស់ថា៖ Phagocytosis បែងចែកជា ៣ ដំណាក់កាល៖ 1. Movement of cells (Chemotaxis & Adherence: ដំណាក់កាលទី ១ ដល់ ៣), 2. Engulfment (Phagosome formation: ដំណាក់កាលទី ៤ ដល់ ៥), និង 3. Digestion (Lysosomal fusion & Destruction: ដំណាក់កាលទី ៦)។"
+  },
+  {
+    topic: "Neutrophil Adhesion — CD18 Molecule",
+    title: "តើម៉ូលេគុលលើផ្ទៃកោសិកា Leukocyte-specific CD18 ដើរតួនាទីយ៉ាងណាខ្លះក្នុងការឆ្លើយតបការពាររាងកាយរបស់ Neutrophil?",
+    hint: "សម្របសម្រួលការស្អិតជាប់ពេលធ្វើ Migration និងដើរតួជា Phagocytic receptor សម្លាប់បាក់តេរី។",
+    options: [
+      { text: "សម្របសម្រួលការស្អិតជាប់ (Adhesion) អំឡុងពេល Migration និងដើរតួជា Phagocytic receptor ស្រូបយកបាក់តេរី", isCorrect: true },
+      { text: "ផលិតអរម៉ូន Histamine ដើម្បីធ្វើឱ្យសរសៃឈាមរួមតូចភ្លាមៗ", isCorrect: false },
+      { text: "ទប់ស្កាត់មិនឱ្យកោសិកា Neutrophil ចេញពីខួរឆ្អឹងទៅកាន់ឈាម", isCorrect: false },
+      { text: "បំប្លែងកោសិកា Myeloblast ឱ្យក្លាយទៅជាប្លាកែតដោយផ្ទាល់", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀនដំណាក់កាល Engulfment បញ្ជាក់ថា៖ Leukocyte-specific CD18 សម្របសម្រួលការស្អិតជាប់ (Adhesion) របស់ neutrophil ក្នុងអំឡុងពេលធ្វើ migration ព្រមទាំងមានមុខងារជា Phagocytic receptor សម្រាប់ការស្រូបយក និងសម្លាប់បាក់តេរី។"
+  },
+  {
+    topic: "Pathology — Hypersegmented Neutrophils",
+    title: "អ្នកជំងឺម្នាក់មានការឆ្លងមេរោគក្នុងឈាមធ្ងន់ធ្ងរ (Sepsis) ឬស្លេកស្លាំង Megaloblastic Anemia។ លើគំនាសឈាមក្រៅ ប្រទះឃើញកោសិកា Neutrophil មានណៃយូច្រើនជាង ៥ ក្លែប (Hypersegmented)។ តើនេះជាសញ្ញាបញ្ជាក់ពីអ្វី?",
+    hint: "Hypersegmented neutrophil (>5 lobes) កើតឡើងក្នុង Megaloblastic anemia, Sepsis ឬ Myelodysplastic syndrome។",
+    options: [
+      { text: "ជាភាពមិនប្រក្រតីបង្កឡើងដោយ Megaloblastic anemia, Sepsis ឬ Myelodysplastic syndrome", isCorrect: true },
+      { text: "ជាកោសិកាធម្មតារបស់មនុស្សចាស់ដែលមានអាយុលើសពី ៦០ ឆ្នាំ", isCorrect: false },
+      { text: "ជាការឆ្លងមេរោគប៉ារ៉ាស៊ីតព្រូនអគ្គីលីលក្នុងថ្លើមតែមួយគត់", isCorrect: false },
+      { text: "ជាកោសិកាខ្ចីទើបតែចេញពីខួរឆ្អឹងខ្នងមិនទាន់មានក្រានុល", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Neutrophil Morphology បញ្ជាក់ថា៖ Neutrophil ធម្មតាមានណៃយូចន្លោះពី ២ ដល់ ៥ lobes។ ប្រសិនបើពិនិត្យឃើញលើសពី ៥ lobes (Hypersegmented) គឺជាសញ្ញានៃស្ថានភាពជំងឺ (Pathological conditions) ដូចជា Megaloblastic anemia (ខ្វះ B12/Folate), Sepsis, Myelodysplastic syndrome ឬការពុលលោហៈធាតុធ្ងន់។"
+  },
+  {
+    topic: "Eosinophil — Function & Inflammatory Regulation",
+    title: "តើកោសិកា Eosinophil មានតួនាទីស្នូលអ្វីខ្លះក្នុងប្រព័ន្ធភាពស៊ាំ និងការឆ្លើយតបការរលាក (Inflammation)?",
+    hint: "ការពារប្រឆាំងប៉ារ៉ាស៊ីត ឆ្លើយតបប្រតិកម្មអាឡែកស៊ី និងបញ្ចេញសារធាតុទប់ស្កាត់ការរាលដាលនៃការរលាក។",
+    options: [
+      { text: "ការពារប្រឆាំងប៉ារ៉ាស៊ីត, ឆ្លើយតបអាឡែកស៊ី, និងទប់ស្កាត់ការរាលដាលនៃការរលាកក្នុងជាលិកា", isCorrect: true },
+      { text: "ផលិតអង្គបដិប្រាណ Immunoglobulin M (IgM) ក្នុងបរិមាណច្រើន", isCorrect: false },
+      { text: "បំបែកកំណកឈាម Fibrin ក្នុងខួរក្បាលឱ្យរលាយបាត់ភ្លាមៗ", isCorrect: false },
+      { text: "ដឹកជញ្ជូនឧស្ម័នកាបូនិចពីសួតទៅកាន់កោសិកាជុំវិញខ្លួន", isCorrect: false }
+    ],
+    rationale: "យោងតាមស្លាយមេរៀន Eosinophil Function៖ មុខងារចម្បងរបស់ Eosinophils រួមមាន៖ ការពាររាងកាយប្រឆាំងនឹងប៉ារ៉ាស៊ីត (Helminths), ឆ្លើយតបប្រតិកម្មអាឡែកស៊ី, ដកយកសារធាតុ Fibrin ចេញអំឡុងពេលរលាក, និងដើរតួជា Homeostatic regulator ទប់ស្កាត់កុំឱ្យការរលាករីករាលដាលហួសហេតុក្នុងជាលិកា។"
+  },
+  {
+    topic: "Basophil — Degranulation & Anaphylaxis",
+    title: "នៅពេលដែលកោសិកា Basophil (ឬ Mast cell ក្នុងជាលិកា) ត្រូវភ្ញោចដោយអង់ទីហ្សែនតាមរយៈ IgE receptors វានឹងធ្វើ Degranulation បញ្ចេញ Histamine។ តើមានផលវិបាកគ្លីនិកអ្វីកើតឡើង?",
+    hint: "កើនឡើង Vascular permeability, កន្ត្រាក់សាច់ដុំរលោង, និងរីកសរសៃឈាម ឈានទៅរក Anaphylactic shock។",
+    options: [
+      { text: "បង្កើន Vascular permeability, កន្ត្រាក់សាច់ដុំរលោង, និងរីកសរសៃឈាម ដែលអាចបង្ក Anaphylactic shock", isCorrect: true },
+      { text: "ធ្វើឱ្យសម្ពាធឈាមកើនឡើងខ្លាំង និងស្ទះសរសៃឈាមអាក់ទែបេះដូង", isCorrect: false },
+      { text: "រំលាយបំបែកកោសិកាឈាមក្រហមទាំងអស់ក្នុងសរសៃឈាមភ្លាមៗ", isCorrect: false },
+      { text: "ទប់ស្កាត់មិនឱ្យកោសិកាឈាមស Neutrophil ធ្វើចលនា Chemotaxis", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Basophil Function ចែងថា៖ ក្រានុលរបស់ Basophil សំបូរទៅដោយ Histamine និង Heparin ហើយមាន IgE receptors ច្រើន។ ការបញ្ចេញសារធាតុទាំងនេះ (Degranulation) ធ្វើឱ្យកើនឡើងនូវ Vascular permeability, Vasodilation, និង Smooth muscle spasm ដែលអាចបណ្តាលឱ្យអ្នកជំងឺធ្លាក់ក្នុងសភាព Anaphylactic shock គំរាមកំហែងដល់អាយុជីវិត។"
+  },
+  {
+    topic: "Basophil — Peripheral Blood Half-life",
+    title: "ក្នុងចំណោមពពួក Granulocytes ទាំងអស់ តើកោសិកាណាដែលមានអាយុកាលរស់នៅក្នុងចរន្តឈាម (Circulation lifespan) ខ្លីជាងគេបំផុត (ត្រឹមតែប្រហែល ១២ ម៉ោង)?",
+    hint: "Basophil មានវត្តមានក្នុងចរន្តឈាមត្រឹមតែ 12 ម៉ោងប៉ុណ្ណោះ។",
+    options: [
+      { text: "Basophil (មានវត្តមានក្នុងចរន្តឈាមត្រឹមតែប្រហែល 12 ម៉ោងប៉ុណ្ណោះ)", isCorrect: true },
+      { text: "Neutrophil (មានវត្តមានក្នុងចរន្តឈាម 7 ទៅ 10 ថ្ងៃ)", isCorrect: false },
+      { text: "Eosinophil (មានវត្តមានក្នុងចរន្តឈាម 2.5 ថ្ងៃ)", isCorrect: false },
+      { text: "Monocyte (មានវត្តមានក្នុងចរន្តឈាម ១ ខែពេញ)", isCorrect: false }
+    ],
+    rationale: "យោងតាមស្លាយមេរៀន Granulopoiesis Kinetics៖ Segmented neutrophils រស់ក្នុងចរន្តឈាម 7-10 ថ្ងៃ, Eosinophils រស់ក្នុងចរន្តឈាម 2.5 ថ្ងៃ, ចំណែក Basophils គឺជាកោសិកាឈាមសដែលមានរយៈពេលខ្លីបំផុតនៅក្នុងចរន្តឈាម គឺត្រឹមតែ 12 ម៉ោង (12 hours) ប៉ុណ្ណោះ មុនពេលផ្លាស់ទីទៅជាលិកាក្លាយជា Mast cells។"
+  },
+  {
+    topic: "Tissue Macrophages — Anatomical Nomenclature",
+    title: "នៅពេល Monocytes ចាកចេញពីសរសៃឈាមទៅរស់នៅក្នុងជាលិកាផ្សេងៗ ពួកវាក្លាយជា Macrophages។ តើ Macrophage ដែលរស់នៅក្នុងប្រព័ន្ធប្រសាទកណ្តាល (Central Nervous System) មានឈ្មោះថាអ្វី?",
+    hint: "Microglial cells ក្នុងប្រព័ន្ធប្រសាទ; Kupffer cells ក្នុងថ្លើម; Osteoclasts ក្នុងឆ្អឹង; Histiocytes ក្នុងជាលិកាភ្ជាប់។",
+    options: [
+      { text: "Microglial cells (កោសិកាម៉ាក្រូហ្វាសក្នុងប្រព័ន្ធប្រសាទ)", isCorrect: true },
+      { text: "Kupffer cells (កោសិកាម៉ាក្រូហ្វាសក្នុងថ្លើម)", isCorrect: false },
+      { text: "Osteoclasts (កោសិកាម៉ាក្រូហ្វាសក្នុងឆ្អឹង)", isCorrect: false },
+      { text: "Histiocytes (កោសិកាម៉ាក្រូហ្វាសក្នុងជាលិកាភ្ជាប់ធូរ)", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន The monocytic-macrophage series បង្ហាញច្បាស់ថា Macrophages មានឈ្មោះទៅតាមទីតាំង៖ Microglial cells ក្នុង Nervous system, Kupffer cells ក្នុង Sinusoids នៃថ្លើម, Osteoclasts ក្នុងឆ្អឹង, និង Histiocytes ក្នុង Loose connective tissues។"
+  },
+  {
+    topic: "Monocyte — Bactericidal Capacity & Lipase",
+    title: "ហេតុអ្វីបានជា Monocytes/Macrophages មានសមត្ថភាពពិសេសក្នុងការសម្លាប់ និងរំលាយបាក់តេរីរបេង (Mycobacterium tuberculosis) បានល្អជាង Neutrophils?",
+    hint: "Monocyte សំបូរទៅដោយអង់ស៊ីម Lipase ដែលរំលាយជញ្ជាំងកោសិកាស្រោបដោយជាតិខ្លាញ់ Lipids របស់មេរោគរបេង។",
+    options: [
+      { text: "ព្រោះស៊ីតូប្លាស Monocyte សំបូរអង់ស៊ីម Lipase ដែលអាចរំលាយជញ្ជាំងសំបូរជាតិខ្លាញ់របស់ M. tuberculosis", isCorrect: true },
+      { text: "ព្រោះ Monocyte បញ្ចេញអរម៉ូន Heparin ធ្វើឱ្យបាក់តេរីរបេងកកឈាមស្លាប់", isCorrect: false },
+      { text: "ព្រោះ Monocyte មានទំហំតូចជាងបាក់តេរីរបេងទើបងាយស្រួលទម្លុះចូលខាងក្នុង", isCorrect: false },
+      { text: "ព្រោះ Monocyte មិនត្រូវការថាមពលក្នុងការធ្វើ Phagocytosis ឡើយ", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Digestion ចែងថា៖ Monocytes សំបូរទៅដោយអង់ស៊ីម Lipase ក្នុង cytoplasm។ Lipase នេះមានប្រសិទ្ធភាពខ្ពស់ក្នុងការរំលាយជញ្ជាំងកោសិកាដែលសំបូរទៅដោយជាតិខ្លាញ់ក្រមួន (Lipid-rich waxy cell wall) នៃបាក់តេរីដូចជា Mycobacterium tuberculosis ដែល Neutrophil ពិបាកកម្ទេច។"
+  },
+  {
+    topic: "Sepsis — Leukocyte Recruitment Timeline",
+    title: "យោងតាមគំនូសបំព្រួញ Leukocyte Recruitment Pattern ក្នុងការរលាកស្រួចស្រាវ ឬ Sepsis តើកោសិកាណាដែលកើនឡើងដល់ចំណុចកំពូលមុនគេនៅ ១២ ម៉ោងដំបូង ហើយកោសិកាណាដែលមកដល់បន្តបន្ទាប់នៅ ២៤ ម៉ោងក្រោយ?",
+    hint: "Neutrophils កើនដល់កំពូលនៅ 12 ម៉ោង; Monocytes មកដល់ និងឡើងកំពូលនៅ 24 ម៉ោងឡើងទៅ។",
+    options: [
+      { text: "Neutrophils ឡើងដល់កំពូលនៅ ១២ ម៉ោងដំបូង ហើយ Monocytes បន្តឡើងដល់កំពូលនៅ ២៤ ម៉ោងក្រោយ", isCorrect: true },
+      { text: "Monocytes ឡើងដល់កំពូលនៅ ១ ម៉ោងដំបូង ហើយ Neutrophils មកដល់ក្រោយគេបង្អស់", isCorrect: false },
+      { text: "Basophils ឡើងដល់កំពូលនៅ ២៤ ម៉ោង ហើយ Lymphocytes មកដល់នៅ ១ ម៉ោង", isCorrect: false },
+      { text: "កោសិកាទាំងពីរប្រភេទមកដល់ដំណាលគ្នានៅនាទីដំបូងដោយគ្មានការយឺតយ៉ាវឡើយ", isCorrect: false }
+    ],
+    rationale: "យោងតាម Figure 14.21 (Leukocyte recruitment pattern)៖ ក្នុងដំណើរការរលាកស្រួចស្រាវ Neutrophils ធ្វើសកម្មភាពលឿនបំផុត ដោយកើនឡើងដល់កម្រិតកំពូលនៅរង្វង់ ១២ ម៉ោង (12h)។ បន្ទាប់មក សញ្ញា Chemokines និង Apoptotic neutrophils នឹងកេណ្ឌ Monocytes ឱ្យមកដល់កម្រិតកំពូលនៅរង្វង់ ២៤ ម៉ោង (24h) ដើម្បីបន្ត Phagocytosis សម្អាតកាកសំណល់។"
+  },
+  {
+    topic: "Myeloid Cytokines — Chromosomal Locations",
+    title: "យោងតាមមេរៀន Control of Granulopoiesis តើហ្សែនដែលទទួលខុសត្រូវផលិតកត្តាកំណើន G-CSF ស្ថិតនៅលើក្រូម៉ូសូមគូទីប៉ុន្មាន?",
+    hint: "G-CSF លើក្រូម៉ូសូម ១៧; GM-CSF, IL-3, M-CSF លើក្រូម៉ូសូម ៥; EPO លើក្រូម៉ូសូម ៧។",
+    options: [
+      { text: "ក្រូម៉ូសូមគូទី 17 (Chromosome 17)", isCorrect: true },
+      { text: "ក្រូម៉ូសូមគូទី 5 (Chromosome 5)", isCorrect: false },
+      { text: "ក្រូម៉ូសូមគូទី 7 (Chromosome 7)", isCorrect: false },
+      { text: "ក្រូម៉ូសូមគូទី 11 (Chromosome 11)", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Hematopoietic growth factor បញ្ជាក់ទីតាំងហ្សែនច្បាស់លាស់៖ Chromosome 17 ផ្ទុកហ្សែន G-CSF; Chromosome 5 ផ្ទុកហ្សែន GM-CSF, IL-3, និង M-CSF; រីឯ Chromosome 7 ផ្ទុកហ្សែន Erythropoietin (EPO)។"
+  },
+  {
+    topic: "Megakaryocytopoiesis — Endomitosis Process",
+    title: "តើដំណើរការលូតលាស់ស្នូលកោសិកា 'Endomitosis' ក្នុងអំឡុងពេល Megakaryocytopoiesis មានលក្ខណៈពិសេសខុសប្លែកពី Mitosis ធម្មតាយ៉ាងដូចម្តេច?",
+    hint: "DNA ចម្លងទ្វេដង (Ploidy 2N -> 64N) ប៉ុន្តែគ្មានការចែកស៊ីតូប្លាស (No cytokinesis) ឡើយ។",
+    svg: `<svg width="220" height="85" viewBox="0 0 220 85"><circle cx="45" cy="42" r="14" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/><text x="45" y="45" fill="#38bdf8" font-size="8" text-anchor="middle">2N</text><path d="M 65,42 L 80,42" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/><circle cx="105" cy="42" r="22" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><text x="105" y="45" fill="#f59e0b" font-size="8" text-anchor="middle">8N/16N</text><path d="M 132,42 L 147,42" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/><circle cx="180" cy="42" r="30" fill="#1e293b" stroke="#ef4444" stroke-width="2.5"/><text x="180" y="45" fill="#ef4444" font-size="9" text-anchor="middle">32N/64N</text></svg>`,
+    options: [
+      { text: "ស្នូលកោសិកាចម្លង DNA ទ្វេដងជាបន្តបន្ទាប់ (2N ដល់ 64N) ដោយគ្មានការបែងចែកស៊ីតូប្លាស (No cytokinesis)", isCorrect: true },
+      { text: "កោសិកាចែកខ្លួនជាពីរកោសិកាកូនដាច់ដោយឡែកពីគ្នាជារៀងរាល់ ៤ ម៉ោង", isCorrect: false },
+      { text: "ណៃយូត្រូវបានច្រានទម្លាក់ចោលភ្លាមៗដូច Orthochromic normoblast", isCorrect: false },
+      { text: "កោសិកាចងភ្ជាប់ជាមួយប្លាកែតដទៃទៀតបង្កើតបានជាដុំសាច់មហារីក", isCorrect: false }
+    ],
+    rationale: "យោងតាមស្លាយមេរៀន Amplification of Megakaryocytes៖ Endomitosis គឺជាការបែងចែកនុយក្លេអ៊ែរដែលក្រូម៉ូសូមចម្លងទ្វេដង (Synchronous nuclear replication: 2N -> 4N -> 8N -> 16N -> 32N -> 64N) ដោយគ្មាន Telophase និងគ្មាន Cytokinesis (គ្មានការចែកដាច់ cytoplasm) ឡើយ ធ្វើឱ្យ Megakaryocyte ក្លាយជាកោសិកាយក្សមាន Polyploid nucleus។"
+  },
+  {
+    topic: "Megakaryocyte Morphology — MK Stages",
+    title: "ក្រោមមីក្រូទស្សន៍ខួរឆ្អឹង តើកោសិកា Megakaryocyte ពេញវ័យ (MK-III) មានទំហំ និងរូបរាងណៃយូធម្មតាយ៉ាងដូចម្តេច?",
+    hint: "ទំហំយក្ស 20-90 µm, ណៃយូមាន 2 ទៅ 32 lobes (ជាទូទៅ 8 lobes សាមញ្ញជាងគេ)។",
+    options: [
+      { text: "ទំហំយក្ស 20 ទៅ 90 µm, ណៃយូចែកជា 2 ទៅ 32 lobes (ភាគច្រើន 8 lobes) ជាមួយស៊ីតូប្លាសសំបូរក្រានុល", isCorrect: true },
+      { text: "ទំហំតូច 2 ទៅ 4 µm, គ្មានណៃយូ, ស៊ីតូប្លាសពណ៌ខៀវស្រាល", isCorrect: false },
+      { text: "ទំហំ 10 ទៅ 15 µm, ណៃយូរាងមូលចំកណ្តាល មាន nucleoli ៥", isCorrect: false },
+      { text: "ទំហំ 12 ទៅ 20 µm, ណៃយូរាងក្រចកសេះ គ្មានក្រានុល", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន The Step of Megakaryocytopoiesis បញ្ជាក់ថា៖ Megakaryocyte MK-III (Mature) មានទំហំធំបំផុតក្នុងខួរឆ្អឹង (20-90 µm), ណៃយូមានពហុ lobes ចន្លោះពី 2 ដល់ 32 lobes (ទូទៅបំផុតគឺ 8 lobes ឬ 16N), ស៊ីតូប្លាសពណ៌ផ្កាឈូក/ខៀវសំបូរក្រានុលក្រហមស្វាយ ត្រៀមបញ្ចេញប្លាកែត។"
+  },
+  {
+    topic: "Thrombopoiesis — Platelet Shedding Yield",
+    title: "យោងតាមស្លាយមេរៀនរបស់សាស្ត្រាចារ្យ Ph. NHEP Sopheary តើកោសិកា Megakaryocyte ពេញវ័យ ១ អាចបញ្ចេញបំបែកជាប្លាកែត (Platelets) ចូលក្នុងចរន្តឈាមបានចំនួនប្រហែលប៉ុន្មាន?",
+    hint: "កោសិកា Megakaryocyte ១ បង្កើតបានប្រហែល 1,000 ដល់ 10,000 ប្លាកែត។",
+    options: [
+      { text: "ប្រហែល 1,000 ដល់ 10,000 ប្លាកែត (1 Megakaryocyte = ~10,000 plaquettes)", isCorrect: true },
+      { text: "ត្រឹមតែ 16 ប្លាកែតប៉ុណ្ណោះដូច Erythropoiesis", isCorrect: false },
+      { text: "ប្រហែល 100 លានប្លាកែតក្នុងមួយកោសិកា", isCorrect: false },
+      { text: "បង្កើតបានតែ ២ ប្លាកែតជារៀងរាល់ខែ", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Morphologies of Thrombopoiesis ចែងថា៖ 'Megakaryocyte 1 = 10,000 plaquettes' (ជាទូទៅក្នុងសៀវភៅវេជ្ជសាស្ត្រចន្លោះពី 1,000 ដល់ 8,000 ឬ 10,000 ប្លាកែត) តាមរយៈការបញ្ចេញ Proplatelet pseudopodia ជ្រៀតចូលក្នុង Sinusoids នៃខួរឆ្អឹងរួចដាច់ជាបំណែកៗ។"
+  },
+  {
+    topic: "Platelet Kinetics — Blood Lifespan & Destruction Sites",
+    title: "តើប្លាកែតធម្មតាមានអាយុកាលរស់នៅក្នុងចរន្តឈាម (Platelet lifespan) ប៉ុន្មានថ្ងៃ ហើយសរីរាង្គណាខ្លះដែលទទួលខុសត្រូវបំផ្លាញប្លាកែតចាស់ៗ?",
+    hint: "រស់នៅ 7 ទៅ 10 ថ្ងៃ; ត្រូវបំផ្លាញ និងច្រោះចោលនៅអណ្តើក និងថ្លើម (Spleen and Liver)។",
+    options: [
+      { text: "អាយុកាល 7 ទៅ 10 ថ្ងៃ ហើយត្រូវបានបំផ្លាញច្រោះចោលនៅអណ្តើក និងថ្លើម (Spleen and Liver)", isCorrect: true },
+      { text: "អាយុកាល 120 ថ្ងៃ ហើយត្រូវបានបំផ្លាញនៅតម្រងនោមតាមទឹកនោម", isCorrect: false },
+      { text: "អាយុកាលត្រឹមតែ ១២ ម៉ោង ហើយត្រូវបានបំផ្លាញនៅក្នុងសួត", isCorrect: false },
+      { text: "អាយុកាលពេញមួយជីវិតមនុស្សដោយមិនដែលរងការបំផ្លាញឡើយ", isCorrect: false }
+    ],
+    rationale: "យោងតាមស្លាយមេរៀន Thrombopoiesis៖ ប្លាកែតមានអាយុកាលរស់នៅក្នុងចរន្តឈាមពី 7 ទៅ 10 ថ្ងៃ (7 to 10 days)។ ប្លាកែតចាស់ៗដែលបាត់បង់មុខងារ ត្រូវបានកម្ទេច និងដកចេញពីចរន្តឈាមដោយប្រព័ន្ធ Mononuclear phagocyte system នៅក្នុងអណ្តើក (Spleen) និងថ្លើម (Liver)។"
+  },
+  {
+    topic: "Platelet Function — Clot Retraction & Thrombosthenin",
+    title: "ក្រោយពេលកំណកឈាម Fibrin កកើតឡើងរួចរាល់ កំណកឈាមចាប់ផ្តើមរួញមាឌរឹងមាំ (Clot retraction) ដើម្បីឃាត់ឈាមឱ្យបានស្អិតល្អ។ តើប្រូតេអ៊ីនកន្ត្រាក់មួយណាដែលបញ្ចេញដោយប្លាកែតដើម្បីសម្រេចមុខងារនេះ?",
+    hint: "Thrombosthenin (ប្រូតេអ៊ីនកន្ត្រាក់សាច់ដុំរបស់ប្លាកែត)។",
+    options: [
+      { text: "Thrombosthenin (ប្រូតេអ៊ីនកន្ត្រាក់របស់ប្លាកែតជួយឱ្យកកំណកឈាមឡើងរួញ)", isCorrect: true },
+      { text: "Erythropoietin (អរម៉ូនជំរុញការផលិតឈាមក្រហម)", isCorrect: false },
+      { text: "Spectrin (ប្រូតេអ៊ីនគ្រោងឆ្អឹងកោសិកាក្រហម)", isCorrect: false },
+      { text: "Transferrin (ប្រូតេអ៊ីនដឹកជញ្ជូនជាតិដែក)", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Functions thrombocytes (Function hemostatic) បញ្ជាក់ច្បាស់ថា៖ ដំណាក់កាលកៃយ៉ូឈាមឡើងទ្រោម/រួញ (Clot retraction) កើតឡើងដោយសារប្លាកែតបញ្ចេញប្រូតេអ៊ីនកន្ត្រាក់ Thrombosthenin (ស្រដៀង Actomyosin) ធ្វើឱ្យកំណកឈាមរួញតូច បង្ហូរ Serum ចេញ និងទាញគែមមុខរបួសឱ្យជិតគ្នា។"
+  },
+  {
+    topic: "Thrombopoiesis Regulation — Positive vs Negative Cytokines",
+    title: "តើកត្តា Cytokines មួយណាដែលដើរតួជានិយ័តករអវិជ្ជមាន (Negative regulation) រារាំងដំណើរការ Megakaryocytopoiesis មិនឱ្យផលិតប្លាកែតហួសប្រមាណ?",
+    hint: "Platelet factor 4 (PF4), TGF-beta, និង Interferons (IFN) ជានិយ័តករអវិជ្ជមាន។",
+    options: [
+      { text: "Transforming Growth Factor-beta (TGF-β) និង Platelet Factor 4 (PF4)", isCorrect: true },
+      { text: "Thrombopoietin (TPO) និង Interleukin-11 (IL-11)", isCorrect: false },
+      { text: "Stem Cell Factor (SCF) និង Interleukin-6 (IL-6)", isCorrect: false },
+      { text: "Granulocyte-CSF (G-CSF) និង Interleukin-3 (IL-3)", isCorrect: false }
+    ],
+    rationale: "យោងតាមស្លាយ Regulation of cytokines៖ TPO, IL-11, IL-6, IL-3, និង SCF ជានិយ័តករវិជ្ជមាន (Positive regulation) ជំរុញ MK proliferation & endomitosis។ ផ្ទុយទៅវិញ TGF-beta, Platelet Factor 4 (PF4), Beta-TG, CTAP-III, និង Interferon alpha/gamma ដើរតួជានិយ័តករអវិជ្ជមាន (Negative regulation) ទប់ស្កាត់ការផលិតប្លាកែត។"
+  },
+  {
+    topic: "Lymphopoiesis — Primary vs Secondary Lymphoid Organs",
+    title: "តើអ្វីជាភាពខុសគ្នាដ៏សំខាន់បំផុតរវាងសរីរាង្គឡាំហ្វាទិចបឋម (Primary lymphoid organs) និងសរីរាង្គឡាំហ្វាទិចបន្ទាប់បន្សំ (Secondary lymphoid organs)?",
+    hint: "Primary (ខួរឆ្អឹង, ទីមុស) លូតលាស់ដោយមិនពឹងលើអង់ទីហ្សែន (Antigen-independent); Secondary (កូនកណ្តុរ, អណ្តើក) ពឹងលើការរំញោចពីអង់ទីហ្សែន (Antigen-dependent)។",
+    options: [
+      { text: "Primary ជាកន្លែងលូតលាស់ Antigen-independent រីឯ Secondary ជាកន្លែងធ្វើ Proliferation ពឹងលើ Antigenic stimulation", isCorrect: true },
+      { text: "Primary ផលិតតែកោសិកាក្រហម រីឯ Secondary ផលិតតែកោសិកាឈាមស", isCorrect: false },
+      { text: "Primary ស្ថិតនៅក្នុងប្រព័ន្ធរំលាយអាហារ រីឯ Secondary ស្ថិតក្នុងខួរឆ្អឹងក្បាល", isCorrect: false },
+      { text: "Primary ដំណើរការតែពេលចាស់ជរា រីឯ Secondary ដំណើរការតែក្នុងអំឡុងគភ៌", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀនចែងច្បាស់ថា៖ ការលូតលាស់របស់ T និង B cells ក្នុង Primary lymphoid tissues (Bone marrow, Thymus) គឺជាដំណាក់កាល Antigen-independent (មិនពឹងលើវត្តមានមេរោគ)។ ផ្ទុយទៅវិញ ការធ្វើ Proliferation របស់ T និង B cells ក្នុង Secondary lymphoid tissues (Lymph nodes, Spleen, Peyer patches) គឺពឹងផ្អែកលើការរំញោចដោយអង់ទីហ្សែន (Antigen-dependent maturation)។"
+  },
+  {
+    topic: "Lymph Node Architecture — T vs B Cell Compartments",
+    title: "នៅក្នុងរចនាសម្ព័ន្ធកូនកណ្តុរ (Lymph node) តើកោសិកា T lymphocytes និង B lymphocytes ស្ថិតនៅទីតាំងកាយវិភាគវិទ្យាណាខ្លះ?",
+    hint: "T cells នៅ Paracortical area; B cells នៅ Germinal centers នៃ Lymphoid follicles។",
+    svg: `<svg width="220" height="90" viewBox="0 0 220 90"><path d="M 40,45 C 40,15 90,10 130,20 C 170,30 180,60 150,80 C 110,90 60,85 40,45 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/><circle cx="85" cy="35" r="14" fill="#a855f7" opacity="0.6"/><text x="85" y="38" fill="#f8fafc" font-size="8" text-anchor="middle">B Follicle</text><path d="M 75,55 Q 110,45 135,60" stroke="#22c55e" stroke-width="4"/><text x="110" y="75" fill="#22c55e" font-size="8" text-anchor="middle">Paracortex (T cells)</text></svg>`,
+    options: [
+      { text: "T cells ស្ថិតនៅតំបន់ Paracortical area រីឯ B cells ស្ថិតនៅ Germinal centers នៃ Lymphoid follicles", isCorrect: true },
+      { text: "T cells ស្ថិតនៅតំបន់ក្រៅកន្សោម Capsule រីឯ B cells ស្ថិតក្នុងបំពង់បង្ហូរទឹកនោម", isCorrect: false },
+      { text: "B cells ស្ថិតនៅតែក្នុងសរសៃឈាមអាក់ទែ រីឯ T cells ស្ថិតក្នុងខួរឆ្អឹងតែមួយគត់", isCorrect: false },
+      { text: "កោសិកាទាំងពីរប្រភេទរាយប៉ាយស្មើគ្នានៅគ្រប់ចំណុចដោយគ្មានការបែងចែកតំបន់ឡើយ", isCorrect: false }
+    ],
+    rationale: "យោងតាម Figure Lymph Node Structure ក្នុងស្លាយមេរៀន៖ B lymphocytes រស់នៅ និងបន្តពូជនៅក្នុង Primary & Secondary follicles (Germinal centers) និង Medullary cords។ ចំណែកឯ T lymphocytes ស្ថិតនៅតំបន់កណ្តាល Paracortical (paracortex) area និង Perifollicular regions។"
+  },
+  {
+    topic: "T Lymphocyte Subsets — CD4 Helper Subsets",
+    title: "ក្នុងចំណោមកោសិកា CD4+ Helper T cells តើអនុក្រុម (Subset) មួយណាដែលដើរតួនាទីស្នូលក្នុងការការពាររាងកាយប្រឆាំងនឹងមេរោគប៉ារ៉ាស៊ីតព្រូន (Helminth parasites) និងប្រតិកម្មអាឡែកស៊ី?",
+    hint: "Th2 cells ការពារប៉ារ៉ាស៊ីតព្រូន និងអាឡែកស៊ី; Th1 ការពារ Intracellular microbes; Th17 ការពារ Fungi & Extracellular bacteria។",
+    options: [
+      { text: "Th2 cells (ទទួលបន្ទុកភាពស៊ាំប្រឆាំង Helminth parasites និងជំងឺអាឡែកស៊ី)", isCorrect: true },
+      { text: "Th1 cells (ទទួលបន្ទុកភាពស៊ាំប្រឆាំង Intracellular bacteria ដូចជា មេរោគរបេង)", isCorrect: false },
+      { text: "Th17 cells (ទទួលបន្ទុកភាពស៊ាំប្រឆាំងតែមេរោគផ្សិត Fungi លើស្បែក)", isCorrect: false },
+      { text: "iTreg cells (ទទួលបន្ទុកបំផ្លាញកោសិកាឈាមក្រហមដែលខូចទ្រង់ទ្រាយ)", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Major lymphocyte membrane characteristics ចែងច្បាស់ថា៖ CD4 T cells ចែកជា ៤ ក្រុម៖ Th1 សំខាន់សម្រាប់ Intracellular microorganisms; Th2 សំខាន់សម្រាប់ Extracellular pathogens ជាពិសេស Helminth parasites និង Allergic reactions; Th17 ការពារ Extracellular bacteria និង Fungi; ហើយ iTreg ជួយទប់ស្កាត់ភាពស៊ាំកុំឱ្យវាយប្រហារខ្លួនឯង។"
+  },
+  {
+    topic: "B Cell Differentiation — Plasma Cell Morphology",
+    title: "នៅពេលកោសិកា B lymphocyte ត្រូវភ្ញោចដោយអង់ទីហ្សែន វានឹងធ្វើការបំប្លែងខ្លួនទៅជាកោសិកា Plasma cell បញ្ចេញ Antibodies។ ក្រោមមីក្រូទស្សន៍ តើ Plasma cell មានរូបរាងសម្គាល់យ៉ាងដូចម្តេច?",
+    hint: "ណៃយូខាប់រាងកង់រទេះ (Cartwheel / Clock-face) នៅកៀនម្ខាង ជាមួយផ្ទៃសថ្លាក្បែរណៃយូ (Perinuclear court/halo)។",
+    svg: `<svg width="200" height="85" viewBox="0 0 200 85"><ellipse cx="100" cy="42" rx="36" ry="26" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/><circle cx="82" cy="42" r="14" fill="#312e81" stroke="#818cf8" stroke-width="1.5"/><path d="M 82,28 L 82,56 M 68,42 L 96,42" stroke="#c7d2fe" stroke-width="1"/><ellipse cx="108" cy="42" rx="8" ry="12" fill="#f8fafc" opacity="0.6"/><text x="100" y="80" fill="#f59e0b" font-size="8" text-anchor="middle">Eccentric Nucleus + Perinuclear Halo</text></svg>`,
+    options: [
+      { text: "ណៃយូរាងកង់រទេះ (Clock-face) នៅកៀនម្ខាង (Eccentric) ជាមួយផ្ទៃថ្លាក្បែរណៃយូ (Perinuclear halo)", isCorrect: true },
+      { text: "ណៃយូចែកជា ៥ ក្លែបចំកណ្តាលកោសិកា ជាមួយក្រានុលពណ៌ទឹកក្រូច", isCorrect: false },
+      { text: "កោសិកាគ្មានណៃយូទាល់តែសោះ រូបរាងដូចឌីសផតសងខាង", isCorrect: false },
+      { text: "ណៃយូរាងជាអក្សរ C ជាមួយស៊ីតូប្លាសពណ៌ផ្កាឈូកស្រាលគ្មានរង្វង់ថ្លា", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Lymphocyte Morphology បញ្ជាក់ថា៖ Plasma cells គឺជា B cells ពេញវ័យផលិតអង្គបដិប្រាណ។ លក្ខណៈរូបសាស្ត្រពិសេសគឺ ណៃយូរាងមូលនៅកៀនម្ខាង (Eccentric nucleus), ក្រូម៉ាទីនខាប់ដុំៗដូចកាំរទេះ (Clock-face/Cartwheel chromatin), និងស៊ីតូប្លាសពណ៌ខៀវចាស់ដែលមានរង្វង់សថ្លាក្បែរណៃយូ (Perinuclear halo/court) តំណាងឱ្យ Golgi apparatus រីកធំ។"
+  },
+  {
+    topic: "Natural Killer (NK) Cells — Innate Characteristics",
+    title: "តើកោសិកា Natural Killer (NK) cells មានលក្ខណៈជីវសាស្ត្រខុសប្លែកពី T និង B lymphocytes យ៉ាងដូចម្តេចចំពោះការរៀបចំហ្សែន?",
+    hint: "NK cells ជាប្រព័ន្ធភាពស៊ាំពីកំណើត (Innate) មិនធ្វើ Rearrangement លើហ្សែន TCR ឬ Immunoglobulin ឡើយ។",
+    options: [
+      { text: "ជាកោសិកា Innate immunity មិនមានការរៀបចំ Rearrangement ហ្សែន TCR ឬ Immunoglobulin ឡើយ", isCorrect: true },
+      { text: "ជាកោសិកាដែលត្រូវទៅរៀនទុំនៅក្នុងក្រពេញទីមុសទើបអាចសម្លាប់មេរោគបាន", isCorrect: false },
+      { text: "ជាកោសិកាដែលបញ្ចេញអង្គបដិប្រាណ IgM និង IgD ចូលទៅក្នុងចរន្តឈាម", isCorrect: false },
+      { text: "ជាកោសិកាដែលវិវឌ្ឍចេញពី Myeloblast តែមួយគត់ក្នុងខួរឆ្អឹង", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន NK Cells ចែងច្បាស់ថា៖ ខុសពី T និង B cells នៃ Adaptive immune system, កោសិកា NK cells ស្ថិតក្នុង Innate immune system មកពី CD34+ progenitors។ ពួកវាមិនធ្វើ Gene rearrangement លើ T-cell receptor (TCR) ឬ Immunoglobulin genes ឡើយ ប៉ុន្តែមានសមត្ថភាពសម្លាប់កោសិកាមហារីក និងកោសិកាឆ្លងវីរុសដោយផ្ទាល់។"
+  },
+  {
+    topic: "Laboratory Hematology — Absolute Lymphocyte Count",
+    title: "អ្នកជំងឺម្នាក់មានលទ្ធផល CBC៖ ចំនួនកោសិកាឈាមសសរុប WBC = 35.1 x 10^9/L ហើយការរាប់ Differential រកឃើញ Lymphocytes = 6%។ តើតម្លៃកោសិកា Absolute Lymphocyte Count ស្មើនឹងប៉ុន្មាន?",
+    hint: "Absolute Count = Total WBC x Lymphocyte% = 35.1 x 0.06 = 2.11 x 10^9/L។",
+    options: [
+      { text: "2.11 x 10⁹/L (ស្ថិតក្នុងកម្រិតធម្មតា)", isCorrect: true },
+      { text: "0.21 x 10⁹/L (ទាបធ្ងន់ធ្ងរ)", isCorrect: false },
+      { text: "6.00 x 10⁹/L (ខ្ពស់ខុសប្រក្រតី)", isCorrect: false },
+      { text: "35.10 x 10⁹/L (ស្មើនឹងចំនួនសរុប)", isCorrect: false }
+    ],
+    rationale: "យោងតាមឧទាហរណ៍ជាក់ស្តែងក្នុងស្លាយ CBC របស់មេរៀន (ស្លាយទី ៤៥)៖ Absolute lymphocyte count = Total WBC x Relative % = 35.1 x 10⁹/L x 0.06 = 2.11 x 10⁹/L។ បើទោះជា Relative percentage ធ្លាក់ចុះមកត្រឹម 6% ដោយសារ Neutrophilia ខ្លាំងក៏ដោយ ក៏ Absolute count នៅតែស្ថិតក្នុងកម្រិតធម្មតា (Normal range 1.0 - 4.8 x 10⁹/L)។"
+  },
+  {
+    topic: "Transplantation Immunology — Rejection Mediators",
+    title: "យោងតាមមេរៀន Lymphocyte Function តើកោសិកាណាដែលទទួលខុសត្រូវចម្បងក្នុងប្រតិកម្មច្រានចោលសរីរាង្គប្តូររ៉ាំរ៉ៃ (Chronic graft rejection) ហើយកោសិកាណាដែលសម្របសម្រួល Hyperacute rejection?",
+    hint: "T cells ទទួលខុសត្រូវ Chronic rejection; B cells (អង្គបដិប្រាណ) ទទួលខុសត្រូវ Hyperacute rejection។",
+    options: [
+      { text: "T cells ទទួលខុសត្រូវ Chronic rejection រីឯ B cells (Antibodies) សម្របសម្រួល Hyperacute rejection", isCorrect: true },
+      { text: "B cells ទទួលខុសត្រូវ Chronic rejection រីឯ Neutrophils ទទួលខុសត្រូវ Hyperacute rejection", isCorrect: false },
+      { text: "Basophils ទទួលខុសត្រូវ Chronic rejection រីឯ Eosinophils ទទួលខុសត្រូវ Hyperacute rejection", isCorrect: false },
+      { text: "Platelets ទទួលខុសត្រូវទាំង Chronic rejection និង Hyperacute rejection", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន T and B Lymphocyte Function ចែងយ៉ាងច្បាស់ថា៖ Sensitized T lymphocytes ទទួលខុសត្រូវចំពោះ Chronic rejection ក្នុងការប្តូរសរីរាង្គតាមរយៈយន្តការកោសិកា (Cell-mediated immunity)។ ចំណែកឯស្ថានភាព Hyperacute rejection (កើតឡើងភ្លាមៗក្នុងរយៈពេលប៉ុន្មាននាទី) គឺសម្របសម្រួលដោយ B cells តាមរយៈ Preformed antibodies។"
+  },
+  {
+    topic: "Leukocyte Physiology — Diurnal & Stress Variations",
+    title: "តើកម្រិតកោសិកា Eosinophils ក្នុងចរន្តឈាមប្រែប្រួលតាមពេលវេលាប្រចាំថ្ងៃ (Diurnal variation) និងស្ថានភាពស្ត្រេស (Adrenal corticosteroids) យ៉ាងដូចម្តេច?",
+    hint: "ឡើងខ្ពស់ពេលយប់អំឡុងពេលគេង ធ្លាក់ចុះពេលព្រឹក; ស្ត្រេស/Corticosteroids ធ្វើឱ្យ Eosinophils ធ្លាក់ចុះ។",
+    options: [
+      { text: "ឡើងខ្ពស់បំផុតពេលយប់ជ្រៅអំឡុងពេលគេង ធ្លាក់ចុះពេលព្រឹក ហើយស្ថានភាព Stress ធ្វើឱ្យ Eosinophils ថយចុះ", isCorrect: true },
+      { text: "ឡើងខ្ពស់បំផុតពេលថ្ងៃត្រង់ ធ្លាក់ចុះពេលយប់ ហើយ Stress ធ្វើឱ្យ Eosinophils កើនឡើង ១០ ដង", isCorrect: false },
+      { text: "រក្សាតម្លៃថេរគ្មានការប្រែប្រួលឡើយទោះបីជាស្ថិតក្នុងរដូវកាល ឬពេលវេលាណាក៏ដោយ", isCorrect: false },
+      { text: "បាត់បង់ពីចរន្តឈាមទាំងស្រុងនៅរដូវក្តៅ ហើយកើនឡើងតែនៅពេលមានជំងឺទឹកនោមផ្អែម", isCorrect: false }
+    ],
+    rationale: "ស្លាយមេរៀន Reference ranges ចែងច្បាស់ថា៖ Eosinophils មាន Diurnal variation ខ្ពស់បំផុតនៅពេលយប់ជ្រៅពេលកំពុងគេង (Highest late at night) និងធ្លាក់ចុះនៅពេលព្រឹក។ ម្យ៉ាងទៀត ការកើនឡើងអ័រម៉ូន Adrenal cortical hormones (ស្ថានភាព Stress ឬការប្រើប្រាស់ Corticosteroids) នឹងបណ្តាលឱ្យ Eosinophils ធ្លាក់ចុះទាប (Eosinopenia)។"
+  }
+];
+
+function shuffleArray(arr) {
+  const newArr = [...arr];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+}
+
+let activeQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let timeLeft = 60;
+let timerInterval = null;
+let answered = false;
+let userResults = [];
+
+function initQuiz() {
+  activeQuestions = shuffleArray(rawQuestions).map(q => {
+    return {
+      ...q,
+      options: shuffleArray(q.options)
+    };
+  });
+  
+  currentIndex = 0;
+  score = 0;
+  userResults = [];
+  document.getElementById('finalCard').style.display = 'none';
+  document.getElementById('quizCard').style.display = 'block';
+  loadQuestion(currentIndex);
+}
+
+function loadQuestion(index) {
+  answered = false;
+  timeLeft = 60;
+  clearInterval(timerInterval);
+  
+  const q = activeQuestions[index];
+  document.getElementById('topicBadge').textContent = q.topic;
+  document.getElementById('qCount').textContent = `សំណួរទី ${index + 1} នៃ ${activeQuestions.length}`;
+  document.getElementById('questionTitle').textContent = `${index + 1}. ${q.title}`;
+  
+  const diagBox = document.getElementById('diagramContainer');
+  if (q.svg) {
+    diagBox.innerHTML = q.svg;
+    diagBox.style.display = 'flex';
+  } else {
+    diagBox.innerHTML = '';
+    diagBox.style.display = 'none';
+  }
+
+  document.getElementById('hintContent').textContent = q.hint;
+  document.getElementById('hintContent').style.display = 'none';
+  document.getElementById('feedbackBox').style.display = 'none';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = (index === activeQuestions.length - 1) ? "ពិនិត្យលទ្ធផល →" : "សំណួរបន្ទាប់ →";
+  
+  const optionsGrid = document.getElementById('optionsGrid');
+  optionsGrid.innerHTML = '';
+  q.options.forEach((optObj, optIdx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="letter">${String.fromCharCode(65 + optIdx)}.</span> <span>${optObj.text}</span>`;
+    btn.onclick = () => selectOption(optIdx);
+    optionsGrid.appendChild(btn);
+  });
+  
+  updateTimerUI();
+  timerInterval = setInterval(() => {
+    if (timeLeft > 0) {
+      timeLeft--;
+      updateTimerUI();
+    } else {
+      clearInterval(timerInterval);
+      if (!answered) {
+        handleTimeout();
+      }
+    }
+  }, 1000);
+  
+  updateProgress();
+}
+
+function updateTimerUI() {
+  const el = document.getElementById('timerText');
+  const box = document.getElementById('timerBox');
+  el.textContent = timeLeft + 's';
+  if (timeLeft <= 10) {
+    box.classList.add('urgent');
+  } else {
+    box.classList.remove('urgent');
+  }
+}
+
+function toggleHint() {
+  const h = document.getElementById('hintContent');
+  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+}
+
+function selectOption(chosenIdx) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+  
+  const q = activeQuestions[currentIndex];
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach(btn => btn.disabled = true);
+  
+  const correctIdx = q.options.findIndex(o => o.isCorrect);
+  const isCorrect = q.options[chosenIdx].isCorrect;
+  
+  if (isCorrect) {
+    score++;
+    buttons[chosenIdx].classList.add('correct');
+  } else {
+    buttons[chosenIdx].classList.add('wrong');
+    buttons[correctIdx].classList.add('correct');
+  }
+  
+  userResults.push({
+    q: q.title,
+    chosen: q.options[chosenIdx].text,
+    correctText: q.options[correctIdx].text,
+    isCorrect: isCorrect,
+    why: q.rationale
+  });
+  
+  document.getElementById('liveScore').textContent = `ពិន្ទុ: ${score} / ${currentIndex + 1}`;
+  document.getElementById('feedbackText').textContent = q.rationale;
+  document.getElementById('feedbackBox').style.display = 'block';
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function handleTimeout() {
+  answered = true;
+  const q = activeQuestions[currentIndex];
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach(btn => btn.disabled = true);
+  const correctIdx = q.options.findIndex(o => o.isCorrect);
+  buttons[correctIdx].classList.add('correct');
+  
+  userResults.push({
+    q: q.title,
+    chosen: "អស់ពេល (Time Expired)",
+    correctText: q.options[correctIdx].text,
+    isCorrect: false,
+    why: q.rationale
+  });
+  
+  document.getElementById('feedbackText').innerHTML = '<strong style="color:#ef4444;">អស់ពេល ៦០ វិនាទី! (Time Expired)</strong><br>' + q.rationale;
+  document.getElementById('feedbackBox').style.display = 'block';
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex < activeQuestions.length) {
+    loadQuestion(currentIndex);
+  } else {
+    showFinalResults();
+  }
+}
+
+function updateProgress() {
+  const pct = ((currentIndex + 1) / activeQuestions.length) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function showFinalResults() {
+  document.getElementById('quizCard').style.display = 'none';
+  document.getElementById('finalCard').style.display = 'block';
+  const pct = Math.round((score / activeQuestions.length) * 100);
+  document.getElementById('finalScoreVal').textContent = `${score} / ${activeQuestions.length} (${pct}%)`;
+  
+  let msg = '';
+  if (pct >= 80) msg = 'ល្អប្រសើរណាស់! អ្នកយល់ដឹងច្បាស់លាស់ពីយន្តការលូតលាស់នៃកោសិកា Granulocytes, Monocytes, Platelets និង Lymphocytes សម្រាប់ត្រៀមប្រឡងឆមាស។';
+  else if (pct >= 60) msg = 'លទ្ធផលល្អបង្គួរ! គួររំលឹកបន្ថែមលើដំណាក់កាល Endomitosis, ភាពខុសគ្នារវាង Band និង Seg, និងមុខងារនៃ CD4 T cell subsets។';
+  else msg = 'ត្រូវរំលឹកមេរៀនឡើងវិញ ជាពិសេសរូបសាស្ត្រកោសិកាខួរឆ្អឹង, យន្តការ Phagocytosis និងកត្តាកំណើន Cytokines។';
+  document.getElementById('finalFeedback').textContent = msg;
+
+  const reviewEl = document.getElementById('reviewContainer');
+  reviewEl.innerHTML = '<h3 style="margin-bottom:12px; color:var(--primary);">ពិនិត្យចម្លើយលម្អិត (Answer Review):</h3>' + 
+    userResults.map((r, i) => `
+      <details class="review-item">
+        <summary>${i + 1}. ${r.isCorrect ? "✓ ត្រឹមត្រូវ" : "✗ ខុស"} — ${r.q.substring(0, 50)}...</summary>
+        <p><strong>សំណួរពេញលេញ៖</strong> ${r.q}</p>
+        <p><strong>ចម្លើយរបស់អ្នក៖</strong> <span style="color:${r.isCorrect ? '#86efac' : '#fca5a5'}">${r.chosen}</span></p>
+        <p><strong>ចម្លើយត្រឹមត្រូវ៖</strong> <span style="color:#86efac">${r.correctText}</span></p>
+        <p><strong>ការពន្យល់លម្អិត៖</strong> ${r.why}</p>
+      </details>
+    `).join('');
+}
+
+window.onload = initQuiz;
+</script>
+</body>
+</html>
